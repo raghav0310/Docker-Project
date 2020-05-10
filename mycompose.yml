@@ -1,0 +1,30 @@
+version: '3'
+services:
+        dbos:
+                image: mysql:5.7
+                volumes:
+                       - mysql_storage_new1:/var/lib/mysql
+                restart: always
+                environment:
+                        MYSQL_ROOT_PASSWORD: rootpass
+                        MYSQL_USER: raghav
+                        MYSQL_PASSWORD: raghav
+                        MYSQL_DATABASE: ghost_database
+        ghostos:
+                image: ghost:latest
+                volumes:
+                        - ghost_storage_new:/var/lib/ghost
+                restart: always
+                depends_on:
+                        - dbos
+                ports:
+                        - 8089:2368
+                environment:
+                        database_client: mysql
+                        database_connection_host: dbos
+                        database_connection_user: raghav
+                        database_connection_password: raghav
+                        database_connection_database: projectdocker
+volumes:
+        ghost_storage_new:
+        mysql_storage_new1:
